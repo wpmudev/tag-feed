@@ -3,8 +3,8 @@
 Plugin Name: Tag Feed
 Plugin URI:
 Description: RSS2 feeds
-Author: Andrew Billits (Incsub)
-Version: 2.0
+Author: Andrew Billits (Incsub), S H Mohanjith (Incsub)
+Version: 2.0.1
 Author URI:
 WDP ID: 96
 */
@@ -85,10 +85,10 @@ $more = 1;
 >
 
 <channel>
-	<title><?php bloginfo_rss('name'); ?> <?php _e('Posts'); ?></title>
+	<title><![CDATA[<?php bloginfo_rss('name'); ?> <?php _e('Posts'); ?>]]></title>
 	<atom:link href="<?php self_link(); ?>" rel="self" type="application/rss+xml" />
-	<link><?php bloginfo_rss('url') ?></link>
-	<description><?php bloginfo_rss("description") ?></description>
+	<link><![CDATA[<?php bloginfo_rss('url') ?>]]></link>
+	<description><![CDATA[<?php bloginfo_rss("description") ?>]]></description>
 	<pubDate><?php echo mysql2date('D, d M Y H:i:s +0000', $last_published_post_date_time, false); ?></pubDate>
 	<?php the_generator( 'rss2' ); ?>
 	<language><?php echo get_option('rss_language'); ?></language>
@@ -99,9 +99,9 @@ $more = 1;
 			$author_display_name = $wpdb->get_var("SELECT display_name FROM " . $wpdb->base_prefix . "users WHERE ID = '" . $post['post_author'] . "'");
 			?>
 			<item>
-				<title><?php echo stripslashes($post['post_title']); ?></title>
-				<link><?php echo $post['post_permalink']; ?></link>
-				<comments><?php echo $post['post_permalink'] . '#comments'; ?></comments>
+				<title><![CDATA[<?php echo stripslashes($post['post_title']); ?></title>
+				<link><![CDATA[<?php echo $post['post_permalink']; ?>]]></link>
+				<comments><![CDATA[<?php echo $post['post_permalink'] . '#comments'; ?>]]></comments>
 				<pubDate><?php echo mysql2date('D, d M Y H:i:s +0000', $post['post_published_gmt'], false); ?></pubDate>
 				<dc:creator><?php echo $author_display_name; ?></dc:creator>
 				<guid isPermaLink="false"><?php echo $post['post_permalink']; ?></guid>
