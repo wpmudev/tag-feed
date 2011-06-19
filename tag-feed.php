@@ -4,7 +4,7 @@ Plugin Name: Tag Feed
 Plugin URI:
 Description: RSS2 feeds
 Author: Andrew Billits (Incsub), S H Mohanjith (Incsub)
-Version: 2.0.1
+Version: 2.0.2
 Author URI:
 WDP ID: 96
 */
