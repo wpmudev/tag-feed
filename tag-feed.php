@@ -57,18 +57,26 @@ if ( empty( $number ) ) {
 //------------------------------------------------------------------------//
 //---Functions------------------------------------------------------------//
 //------------------------------------------------------------------------//
-
-$tag_id = $wpdb->get_var("SELECT cat_ID FROM " . $wpdb->base_prefix . "sitecategories WHERE category_nicename = '" . $tag . "'");
+$blog_public = isset($_GET['blog_public'])?$_GET['blog_public']:0;
+$tag_id = $wpdb->get_var("SELECT term_id FROM " . $wpdb->base_prefix . "site_terms WHERE slug = '" . $tag . "'");
 
 if ( empty( $tag_id ) || !is_numeric( $tag_id ) || $tag_id == 0 ) {
-	$tag_id = $wpdb->get_var("SELECT cat_ID FROM " . $wpdb->base_prefix . "sitecategories WHERE cat_name = '" . $tag . "'");
+	$tag_id = $wpdb->get_var("SELECT term_id FROM " . $wpdb->base_prefix . "site_terms WHERE name = '" . $tag . "'");
 }
 
-$query = "SELECT * FROM " . $wpdb->base_prefix . "site_posts WHERE site_id = '" . $current_site->id . "' AND post_terms LIKE '%|" . $tag_id . "|%' AND blog_public = '1' ORDER BY post_published_gmt DESC LIMIT " . $number;
+$tag_sql = " AND post_terms LIKE '%|" . $tag_id . "|%' ";
+
+$public_sql = "";
+if ( !empty($blog_public) ) {
+       $public_sql = " AND blog_public = '{$blog_public}' ";
+}
+
+$query = "SELECT * FROM " . $wpdb->base_prefix . "site_posts WHERE site_id = '" . $current_site->id . "' {$tag_sql} {$public_sql} ORDER BY post_published_gmt DESC LIMIT " . $number;
+
 $posts = $wpdb->get_results( $query, ARRAY_A );
 
 if ( count( $posts ) > 0 ) {
-	$last_published_post_date_time = $wpdb->get_var("SELECT post_published_gmt FROM " . $wpdb->base_prefix . "site_posts WHERE site_id = '" . $current_site->id . "' AND post_terms LIKE '%|" . $tag_id . "|%' AND blog_public = '1' ORDER BY post_published_gmt DESC LIMIT 1");
+	$last_published_post_date_time = $wpdb->get_var("SELECT post_published_gmt FROM " . $wpdb->base_prefix . "site_posts WHERE site_id = '" . $current_site->id . "' {$tag_sql} {$public_sql} ORDER BY post_published_gmt DESC LIMIT 1");
 }
 
 header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true);
@@ -118,4 +126,3 @@ $more = 1;
 </rss>
 <?php
 //------------------------------------------------------------------------//
-?>
