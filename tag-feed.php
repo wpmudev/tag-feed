@@ -79,6 +79,7 @@ if ( count( $posts ) > 0 ) {
 	$last_published_post_date_time = $wpdb->get_var("SELECT post_published_gmt FROM " . $wpdb->base_prefix . "site_posts WHERE site_id = '" . $current_site->id . "' {$tag_sql} {$public_sql} ORDER BY post_published_gmt DESC LIMIT 1");
 }
 
+header('HTTP/1.0 200 OK', true);
 header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true);
 $more = 1;
 
