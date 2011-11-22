@@ -3,7 +3,7 @@
 Plugin Name: Tag Feed
 Plugin URI:
 Description: RSS2 feeds
-Version: 2.1
+Version: 2.1.2
 Author: Andrew Billits (Incsub) / S H Mohanjith (Incsub) / Barry (Incsub)
 Author URI:
 WDP ID: 96
@@ -79,6 +79,26 @@ if ( count( $posts ) > 0 ) {
 	$last_published_post_date_time = $wpdb->get_var("SELECT post_published_gmt FROM " . $wpdb->base_prefix . "site_posts WHERE site_id = '" . $current_site->id . "' {$tag_sql} {$public_sql} ORDER BY post_published_gmt DESC LIMIT 1");
 }
 
+function tag_feed_trim_excerpt($text) {
+	$text = strip_shortcodes( $text );
+	
+	$text = apply_filters('the_content', $text);
+	$text = str_replace(']]>', ']]&gt;', $text);
+        $text = strip_tags($text);
+	$excerpt_length = apply_filters('excerpt_length', 55);
+        $excerpt_more = apply_filters('excerpt_more', ' ' . '[...]');
+        $words = preg_split("/[\n\r\t ]+/", $text, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY);
+        if ( count($words) > $excerpt_length ) {
+                array_pop($words);
+                $text = implode(' ', $words);
+                $text = $text . $excerpt_more;
+        } else {
+                $text = implode(' ', $words);
+        }
+
+	return $content;
+}
+
 header('HTTP/1.0 200 OK', true);
 header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true);
 $more = 1;
@@ -114,7 +134,7 @@ $more = 1;
 				<pubDate><?php echo mysql2date('D, d M Y H:i:s +0000', $post['post_published_gmt'], false); ?></pubDate>
 				<dc:creator><?php echo $author_display_name; ?></dc:creator>
 				<guid isPermaLink="false"><?php echo $post['post_permalink']; ?></guid>
-                <description><![CDATA[<?php echo apply_filters('the_excerpt_rss', wp_trim_excerpt($post['post_content'])); ?>]]></description>
+                <description><![CDATA[<?php echo apply_filters('the_excerpt_rss', tag_feed_trim_excerpt($post['post_content'])); ?>]]></description>
                 <content:encoded><![CDATA[<?php echo apply_filters('the_content_feed', $post['post_content'], 'rss2'); ?>]]></content:encoded>
 				<wfw:commentRss><?php echo $post['post_permalink'] . 'feed/'; ?></wfw:commentRss>
 			</item>
