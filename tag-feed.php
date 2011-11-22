@@ -3,7 +3,7 @@
 Plugin Name: Tag Feed
 Plugin URI:
 Description: RSS2 feeds
-Version: 2.1.2
+Version: 2.1
 Author: Andrew Billits (Incsub) / S H Mohanjith (Incsub) / Barry (Incsub)
 Author URI:
 WDP ID: 96
@@ -96,7 +96,7 @@ function tag_feed_trim_excerpt($text) {
                 $text = implode(' ', $words);
         }
 
-	return $content;
+	return $text;
 }
 
 header('HTTP/1.0 200 OK', true);
