@@ -6,7 +6,7 @@ Description: RSS2 feeds
 Version: 3.0
 Author: Barry (Incsub)
 Author URI:
-WDP ID:
+WDP ID: 96
 Network: true
 */
 
