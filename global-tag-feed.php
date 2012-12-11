@@ -3,7 +3,7 @@
 Plugin Name: Global Tag Feed
 Plugin URI:
 Description: RSS2 feed for tags - to access feed go to http://yoursite.com/feed/globaltagfeed
-Version: 3.0 RC 1
+Version: 3.0
 Author: Barry (Incsub)
 Author URI:
 WDP ID: 96
