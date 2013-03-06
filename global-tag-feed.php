@@ -3,7 +3,7 @@
 Plugin Name: Global Tag Feed
 Plugin URI:
 Description: RSS2 feed for tags - to access feed go to http://yoursite.com/feed/globaltagfeed
-Version: 3.0
+Version: 3.0.1
 Author: Barry (Incsub)
 Author URI:
 WDP ID: 96
@@ -74,10 +74,9 @@ class globaltabfeed {
 		// Remove all excerpt more filters
 		remove_all_filters('excerpt_more');
 
-		$tag = $_GET['tag'];
-		if ( empty( $tag ) ) {
-			$tag = 'uncategorized';
-		}
+		$tag = isset($_GET['tag']) ? $_GET['tag'] : 'uncategorized';
+
+		$number = isset($_GET['number']) ? $_GET['number'] : 25;
 
 		@header('Content-Type: ' . feed_content_type('rss-http') . '; charset=' . get_option('blog_charset'), true);
 		$more = 1;
@@ -86,9 +85,9 @@ class globaltabfeed {
 
 		// Even though this is the tag feed - we'll pull categories as well
 		if(network_term_is_tag( $tag)) {
-			$network_query = network_query_posts( array( 'taxonomy' => 'post_tag', 'term' => $tag ));
+			$network_query_posts = network_query_posts( array( 'taxonomy' => 'post_tag', 'term' => $tag ));
 		} else {
-			$network_query = network_query_posts( array( 'taxonomy' => 'category', 'term' => $tag ));
+			$network_query_posts = network_query_posts( array( 'taxonomy' => 'category', 'term' => $tag ));
 		}
 
 		?>

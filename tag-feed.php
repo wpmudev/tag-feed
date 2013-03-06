@@ -28,15 +28,9 @@ if (empty($wp)) {
 //------------------------------------------------------------------------//
 //---Config---------------------------------------------------------------//
 //------------------------------------------------------------------------//
-$tag = $_GET['tag'];
-if ( empty( $tag ) ) {
-	$tag = 'uncategorized';
-}
+$tag = isset($_GET['tag']) ? $_GET['tag'] : 'uncategorized';
 
-$number = $_GET['number'];
-if ( empty( $number ) ) {
-	$number = '25';
-}
+$number = isset($_GET['number']) ? $_GET['number'] : 25;
 
 global $network_query, $network_post;
 
@@ -51,9 +45,9 @@ echo '<?xml version="1.0" encoding="' . get_option('blog_charset') . '"?' . '>';
 
 // Even though this is the tag feed - we'll pull categories as well
 if(network_term_is_tag( $tag)) {
-	$network_query = network_query_posts( array( 'taxonomy' => 'post_tag', 'term' => $tag ));
+	$network_query_posts = network_query_posts( array( 'taxonomy' => 'post_tag', 'term' => $tag ));
 } else {
-	$network_query = network_query_posts( array( 'taxonomy' => 'category', 'term' => $tag ));
+	$network_query_posts = network_query_posts( array( 'taxonomy' => 'category', 'term' => $tag ));
 }
 
 ?>
